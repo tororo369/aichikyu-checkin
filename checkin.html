@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>受付 | 愛の地球へ 上映会</title>
+<script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<style>
+  :root{
+    --forest-deep:#1B3A2C;
+    --forest:#2D7A5A;
+    --gold:#F0A500;
+    --parchment:#F7F3E8;
+    --ink:#2A2A24;
+    --ok:#2D7A5A;
+    --warn:#c98a00;
+    --err:#a13a2c;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--forest-deep);
+    color:var(--parchment);
+    font-family:'Zen Kaku Gothic New','Hiragino Sans',sans-serif;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:20px 16px 40px;
+  }
+  h1{
+    font-size:16px;
+    font-weight:700;
+    letter-spacing:.08em;
+    margin:8px 0 18px;
+    text-align:center;
+    color:var(--parchment);
+    opacity:.85;
+  }
+  #reader{
+    width:100%;
+    max-width:420px;
+    border-radius:8px;
+    overflow:hidden;
+    border:2px solid rgba(240,165,0,0.5);
+  }
+  .result{
+    width:100%;
+    max-width:420px;
+    margin-top:20px;
+    padding:28px 20px;
+    border-radius:10px;
+    text-align:center;
+    display:none;
+  }
+  .result.show{ display:block; }
+  .result .mark{ font-size:52px; line-height:1; margin-bottom:10px; }
+  .result .name{ font-size:22px; font-weight:700; margin-bottom:6px; }
+  .result .sub{ font-size:14px; opacity:.9; }
+  .result.ok{ background:var(--ok); }
+  .result.duplicate{ background:var(--warn); }
+  .result.notfound{ background:var(--err); }
+
+  .manual{
+    width:100%;
+    max-width:420px;
+    margin-top:22px;
+    display:flex;
+    gap:8px;
+  }
+  .manual input{
+    flex:1;
+    padding:12px 14px;
+    border-radius:6px;
+    border:none;
+    font-size:15px;
+  }
+  .manual button{
+    padding:12px 18px;
+    border-radius:6px;
+    border:none;
+    background:var(--gold);
+    color:var(--forest-deep);
+    font-weight:700;
+    cursor:pointer;
+  }
+  .stats{
+    margin-top:22px;
+    font-size:12.5px;
+    opacity:.7;
+    letter-spacing:.05em;
+  }
+  .hint{
+    font-size:11.5px;
+    opacity:.55;
+    margin-top:6px;
+    max-width:420px;
+    text-align:center;
+  }
+</style>
+</head>
+<body>
+  <h1>愛の地球へ 上映会 — 当日受付</h1>
+  <div id="reader"></div>
+
+  <div id="result" class="result">
+    <div class="mark" id="mark"></div>
+    <div class="name" id="name"></div>
+    <div class="sub" id="sub"></div>
+  </div>
+
+  <div class="manual">
+    <input type="text" id="manualId" placeholder="読み取れない場合：チケットIDを手入力">
+    <button id="manualBtn">確認</button>
+  </div>
+  <div class="hint">カメラへのアクセスを許可してください。うまく読み取れない場合は手入力もご利用いただけます。</div>
+
+  <div class="stats" id="stats"></div>
+
+<script>
+  // ここに、Code.gs をウェブアプリとしてデプロイした際のURLを設定してください
+  const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbzgX9lQAl0SsUqbul5ncxAVJ4zndENWb6T9A497WDyQdG1QO8lF9eMsmWCGnvtt_sTB/exec";
+
+  let checkedCount = 0;
+  const resultEl = document.getElementById('result');
+  const markEl = document.getElementById('mark');
+  const nameEl = document.getElementById('name');
+  const subEl = document.getElementById('sub');
+  const statsEl = document.getElementById('stats');
+
+  let busy = false;
+
+  async function verify(ticketId) {
+    if (busy || !ticketId) return;
+    busy = true;
+
+    if (!ENDPOINT_URL) {
+      showResult('notfound', 'システム未設定', 'ENDPOINT_URLを設定してください');
+      busy = false;
+      return;
+    }
+
+    try {
+      const res = await fetch(ENDPOINT_URL + '?id=' + encodeURIComponent(ticketId));
+      const data = await res.json();
+
+      if (data.result === 'ok') {
+        checkedCount++;
+        statsEl.textContent = '本日の入場受付：' + checkedCount + '名';
+        showResult('ok', data.name + ' 様', '入場OK');
+      } else if (data.result === 'duplicate') {
+        showResult('duplicate', data.name + ' 様', '入場済みです（' + data.checkedInAt + '）');
+      } else {
+        showResult('notfound', 'チケットが見つかりません', 'IDをご確認ください：' + ticketId);
+      }
+    } catch (err) {
+      showResult('notfound', '通信エラー', 'もう一度お試しください');
+    }
+
+    setTimeout(() => { busy = false; }, 1800);
+  }
+
+  function showResult(type, name, sub) {
+    resultEl.className = 'result show ' + type;
+    markEl.textContent = type === 'ok' ? '○' : type === 'duplicate' ? '△' : '×';
+    nameEl.textContent = name;
+    subEl.textContent = sub;
+  }
+
+  document.getElementById('manualBtn').addEventListener('click', () => {
+    const val = document.getElementById('manualId').value.trim();
+    if (val) verify(val);
+    document.getElementById('manualId').value = '';
+  });
+
+  const scanner = new Html5Qrcode("reader");
+  Html5Qrcode.getCameras().then(cameras => {
+    if (!cameras || !cameras.length) return;
+    const camId = cameras.find(c => /back|rear|environment/i.test(c.label))?.id || cameras[cameras.length - 1].id;
+    scanner.start(
+      camId,
+      { fps: 10, qrbox: 240 },
+      decodedText => verify(decodedText.trim()),
+      () => {}
+    );
+  }).catch(() => {
+    statsEl.textContent = 'カメラを起動できません。手入力をご利用ください。';
+  });
+</script>
+</body>
+</html>
