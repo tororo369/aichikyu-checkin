@@ -39,16 +39,11 @@
   }
   #reader{
     width:100%;
-    max-width:200px;
-    height:200px;
+    max-width:220px;
+    margin:0 auto;
     border-radius:8px;
     overflow:hidden;
     border:2px solid rgba(240,165,0,0.5);
-  }
-  #reader video, #reader canvas{
-    width:100% !important;
-    height:100% !important;
-    object-fit:cover !important;
   }
   .result{
     width:100%;
@@ -194,14 +189,10 @@
       camId,
       {
         fps: 12,
-        qrbox: { width: 190, height: 190 },
+        qrbox: { width: 170, height: 170 },
         aspectRatio: 1.0,
         disableFlip: true,
-        videoConstraints: {
-          facingMode: "environment",
-          width: { ideal: 1920 },
-          height: { ideal: 1080 }
-        }
+        videoConstraints: { facingMode: "environment" }
       },
       decodedText => verify(decodedText.trim()),
       () => {}
