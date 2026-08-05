@@ -179,7 +179,17 @@
     const camId = cameras.find(c => /back|rear|environment/i.test(c.label))?.id || cameras[cameras.length - 1].id;
     scanner.start(
       camId,
-      { fps: 10, qrbox: 240 },
+      {
+        fps: 12,
+        qrbox: { width: 250, height: 250 },
+        aspectRatio: 1.0,
+        disableFlip: true,
+        videoConstraints: {
+          facingMode: "environment",
+          width: { ideal: 1920 },
+          height: { ideal: 1080 }
+        }
+      },
       decodedText => verify(decodedText.trim()),
       () => {}
     );
