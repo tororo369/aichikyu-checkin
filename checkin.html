@@ -175,6 +175,10 @@
     subEl.textContent = sub;
   }
 
+  document.getElementById('toggleBtn').addEventListener('click', () => {
+    document.getElementById('manualWrap').classList.toggle('open');
+  });
+
   document.getElementById('manualBtn').addEventListener('click', () => {
     const val = document.getElementById('manualId').value.trim();
     if (val) verify(val);
