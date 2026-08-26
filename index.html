@@ -490,7 +490,7 @@
         body: JSON.stringify(payload)
       });
       const data = await res.json();
-      if(!data || data.status !== 'ok'){ throw new Error('response not ok'); }
+      if(!data || data.status !== 'ok'){ throw new Error((data && data.message) ? data.message : 'response not ok'); }
 
       document.getElementById('stubName').textContent = payload.name;
       document.getElementById('stubAmount').textContent = total.toLocaleString('ja-JP');
@@ -498,6 +498,7 @@
       document.getElementById('stub').style.display = 'block';
       document.getElementById('stub').scrollIntoView({behavior:'smooth', block:'start'});
     }catch(err){
+      errorMsg.textContent = '送信に失敗しました：' + err.message;
       errorMsg.style.display = 'block';
       submitBtn.disabled = false;
       submitBtn.textContent = '申し込む';
