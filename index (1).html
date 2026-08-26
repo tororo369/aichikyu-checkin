@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>映画上映会「愛の地球へⅣ」お申し込み</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2A2118;
+    --paper:#FBF7EE;
+    --paper-dim:#F1EADB;
+    --night:#1B2A22;
+    --night-2:#25392E;
+    --hero-dark:#1E3B22;
+    --hero-mid:#4C8C3B;
+    --hero-light:#AFD98F;
+    --hero-sun:#FDFBEF;
+    --gold:#C9A227;
+    --gold-soft:#E4C868;
+    --moss:#5C7A5E;
+    --line:rgba(42,33,24,0.14);
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      linear-gradient(180deg, rgba(20,28,18,0.55) 0%, rgba(251,247,238,0.94) 38%, rgba(251,247,238,0.97) 100%),
+      url('hero-forest.jpg') center 30%/cover fixed no-repeat;
+    color:var(--ink);
+    font-family:'Noto Sans JP', sans-serif;
+    line-height:1.8;
+    -webkit-font-smoothing:antialiased;
+  }
+  .serif{font-family:'Shippori Mincho', serif;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:92vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:8vh 6vw 10vh;
+    background:
+      linear-gradient(180deg, rgba(20,28,18,0.1) 0%, rgba(16,24,14,0.5) 100%),
+      radial-gradient(ellipse 70% 55% at 50% 6%, rgba(253,251,239,0.5) 0%, transparent 55%);
+    color:var(--paper);
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    left:50%; top:8%;
+    width:360px; height:360px;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    background:radial-gradient(circle at 40% 35%, rgba(255,255,255,0.55), rgba(253,251,239,0.22) 55%, transparent 75%);
+    opacity:0.8;
+    filter:blur(10px);
+    animation:breathe 7s ease-in-out infinite;
+  }
+  @keyframes breathe{
+    0%,100%{ transform:translate(-50%,-50%) scale(1); opacity:0.65; }
+    50%{ transform:translate(-50%,-50%) scale(1.1); opacity:0.9; }
+  }
+  .eyebrow{
+    letter-spacing:0.35em;
+    font-size:0.72rem;
+    color:var(--gold-soft);
+    margin-bottom:1.6rem;
+    z-index:1;
+    text-shadow:0 1px 8px rgba(0,0,0,0.35);
+  }
+  .hero h1{
+    font-size:clamp(2.1rem, 6vw, 3.6rem);
+    margin:0 0 0.6em;
+    font-weight:700;
+    letter-spacing:0.06em;
+    z-index:1;
+    color:var(--paper);
+    text-shadow:0 2px 14px rgba(0,0,0,0.4);
+  }
+  .hero h1 .sub{
+    display:block;
+    font-size:0.42em;
+    letter-spacing:0.3em;
+    color:var(--gold-soft);
+    margin-top:0.7em;
+    font-weight:500;
+  }
+  .hero p.desc{
+    max-width:34em;
+    color:rgba(251,247,238,0.92);
+    font-size:0.98rem;
+    z-index:1;
+    text-shadow:0 1px 10px rgba(0,0,0,0.4);
+  }
+  .hero .meta{
+    margin-top:2.4rem;
+    display:flex;
+    gap:2.2rem;
+    flex-wrap:wrap;
+    justify-content:center;
+    z-index:1;
+  }
+  .hero .meta div{
+    text-align:left;
+    border-left:2px solid var(--gold);
+    padding-left:0.8rem;
+    color:var(--paper);
+    text-shadow:0 1px 8px rgba(0,0,0,0.35);
+  }
+  .hero .meta span{
+    display:block;
+    font-size:0.68rem;
+    letter-spacing:0.18em;
+    color:var(--gold-soft);
+    margin-bottom:0.3em;
+  }
+  .cta{
+    margin-top:3rem;
+    z-index:1;
+  }
+  .btn{
+    display:inline-block;
+    background:var(--gold);
+    color:var(--night);
+    font-family:'Shippori Mincho', serif;
+    font-weight:700;
+    letter-spacing:0.12em;
+    padding:0.95em 2.6em;
+    border-radius:999px;
+    text-decoration:none;
+    border:none;
+    cursor:pointer;
+    font-size:1rem;
+    transition:transform .25s ease, box-shadow .25s ease;
+    box-shadow:0 8px 24px rgba(201,162,39,0.25);
+  }
+  .btn:hover{ transform:translateY(-2px); box-shadow:0 12px 30px rgba(201,162,39,0.35); }
+  .btn:disabled{ opacity:0.55; cursor:not-allowed; transform:none; }
+
+  /* ---------- FORM SECTION ---------- */
+  .section{
+    max-width:640px;
+    margin:0 auto;
+    padding:6rem 6vw;
+  }
+  .section-head{ text-align:center; margin-bottom:2.6rem; }
+  .section-head .eyebrow-dark{
+    letter-spacing:0.3em;
+    font-size:0.7rem;
+    color:var(--moss);
+    margin-bottom:0.8em;
+  }
+  .section-head h2{
+    font-size:1.7rem;
+    margin:0;
+  }
+
+  .ticket{
+    background:rgba(251,247,238,0.92);
+    backdrop-filter:blur(6px);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:2.4rem 2rem;
+    box-shadow:0 18px 50px rgba(27,42,34,0.12);
+  }
+
+  .field{ margin-bottom:1.5rem; }
+  .field label{
+    display:block;
+    font-size:0.82rem;
+    letter-spacing:0.04em;
+    margin-bottom:0.5em;
+    color:var(--night-2);
+    font-weight:500;
+  }
+  .field .req{ color:#8a4a2f; font-size:0.75em; margin-left:0.3em; }
+  .field input[type=text],
+  .field input[type=email],
+  .field input[type=tel],
+  .field select{
+    width:100%;
+    padding:0.85em 1em;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:#fff;
+    font-family:'Noto Sans JP', sans-serif;
+    font-size:0.98rem;
+    color:var(--ink);
+  }
+  .field input:focus, .field select:focus{
+    outline:2px solid var(--moss);
+    outline-offset:1px;
+  }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  @media (max-width:480px){ .row2{ grid-template-columns:1fr; } }
+
+  fieldset{ border:none; padding:0; margin:0 0 1.5rem; }
+  fieldset legend{
+    font-size:0.82rem;
+    color:var(--night-2);
+    font-weight:500;
+    margin-bottom:0.6em;
+    padding:0;
+  }
+  .radio-group{ display:flex; gap:1.5rem; flex-wrap:wrap; }
+  .radio-group label{
+    display:flex; align-items:center; gap:0.5em;
+    font-size:0.92rem; color:var(--ink); font-weight:400;
+    cursor:pointer;
+  }
+
+  .fee-box{
+    background:var(--paper-dim);
+    border-radius:10px;
+    padding:1.1em 1.3em;
+    margin:1.6rem 0;
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    font-size:0.9rem;
+  }
+  .fee-box .amount{
+    font-family:'Shippori Mincho', serif;
+    font-size:1.5rem;
+    color:var(--night-2);
+  }
+  .fee-note{ font-size:0.78rem; color:var(--moss); margin-top:-1rem; margin-bottom:1.6rem; }
+
+  .submit-row{ text-align:center; margin-top:2.2rem; }
+  .error-msg{
+    color:#8a4a2f;
+    font-size:0.85rem;
+    text-align:center;
+    margin-top:1rem;
+    display:none;
+  }
+
+  /* ---------- CONFIRMATION (ticket stub) ---------- */
+  .stub{
+    display:none;
+    background:var(--night);
+    color:var(--paper);
+    border-radius:var(--radius);
+    padding:0;
+    overflow:hidden;
+    box-shadow:0 18px 50px rgba(27,42,34,0.18);
+  }
+  .stub-top{ padding:2.4rem 2rem 1.6rem; text-align:center; }
+  .stub-top .check{
+    width:52px; height:52px;
+    margin:0 auto 1rem;
+    border-radius:50%;
+    background:var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.4rem;
+    color:var(--night);
+  }
+  .stub-top h3{ margin:0 0 0.4em; font-size:1.3rem; }
+  .stub-top p{ color:rgba(251,247,238,0.75); font-size:0.9rem; margin:0; }
+
+  .perforation{
+    position:relative;
+    height:0;
+    border-top:2px dashed rgba(251,247,238,0.28);
+    margin:0 1.6rem;
+  }
+  .perforation::before, .perforation::after{
+    content:"";
+    position:absolute; top:-11px;
+    width:22px; height:22px;
+    border-radius:50%;
+    background:var(--paper);
+  }
+  .perforation::before{ left:-2.6rem; }
+  .perforation::after{ right:-2.6rem; }
+
+  .stub-bottom{ padding:1.8rem 2rem 2.4rem; }
+  .stub-bottom .label{
+    font-size:0.7rem;
+    letter-spacing:0.2em;
+    color:var(--gold-soft);
+    margin-bottom:0.5em;
+  }
+  .bank-card{
+    background:rgba(251,247,238,0.06);
+    border:1px solid rgba(251,247,238,0.18);
+    border-radius:10px;
+    padding:1.4rem 1.5rem;
+    margin-bottom:1.4rem;
+  }
+  .bank-row{
+    display:flex; justify-content:space-between;
+    padding:0.5em 0;
+    border-bottom:1px solid rgba(251,247,238,0.1);
+    font-size:0.92rem;
+  }
+  .bank-row:last-child{ border-bottom:none; }
+  .bank-row .k{ color:rgba(251,247,238,0.6); }
+  .bank-row .v{ font-weight:500; letter-spacing:0.03em; }
+  .bank-row .v.total{ color:var(--gold-soft); font-family:'Shippori Mincho', serif; font-size:1.1rem; }
+
+  .stub-note{
+    font-size:0.82rem;
+    color:rgba(251,247,238,0.68);
+  }
+  .stub-note strong{ color:var(--gold-soft); font-weight:500; }
+
+  footer{
+    text-align:center;
+    padding:3rem 6vw 4rem;
+    font-size:0.78rem;
+    color:var(--moss);
+  }
+</style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="eyebrow">DOCUMENTARY FILM SCREENING</div>
+    <h1 class="serif">愛の地球へ<span style="font-size:0.8em;">Ⅳ</span>
+      <span class="sub">上映会 お申し込み</span>
+    </h1>
+    <p class="desc">この星への、そして自分自身への小さな気づきを届けるドキュメンタリー映画。会場でご一緒できることを楽しみにしています。</p>
+    <div class="meta">
+      <div><span>会場</span>あさけプラザ ホール</div>
+      <div><span>開催地</span>三重県四日市市</div>
+    </div>
+    <div class="cta">
+      <a href="#apply" class="btn">お申し込みはこちら</a>
+    </div>
+  </section>
+
+  <section class="section" id="apply">
+    <div class="section-head">
+      <div class="eyebrow-dark">APPLICATION</div>
+      <h2 class="serif">参加のお申し込み</h2>
+    </div>
+
+    <form class="ticket" id="applyForm">
+      <div class="row2">
+        <div class="field">
+          <label for="name">お名前<span class="req">必須</span></label>
+          <input type="text" id="name" name="name" required placeholder="山田 花子">
+        </div>
+        <div class="field">
+          <label for="kana">ふりがな<span class="req">必須</span></label>
+          <input type="text" id="kana" name="kana" required placeholder="やまだ はなこ">
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="email">メールアドレス<span class="req">必須</span></label>
+          <input type="email" id="email" name="email" required placeholder="example@mail.com">
+        </div>
+        <div class="field">
+          <label for="tel">電話番号<span class="req">必須</span></label>
+          <input type="tel" id="tel" name="tel" required placeholder="090-1234-5678">
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="adults">大人の人数<span class="req">必須</span></label>
+          <select id="adults" name="adults" required>
+            <option value="0">0名</option>
+            <option value="1" selected>1名</option>
+            <option value="2">2名</option>
+            <option value="3">3名</option>
+            <option value="4">4名</option>
+            <option value="5">5名</option>
+            <option value="6">6名</option>
+            <option value="7">7名</option>
+            <option value="8">8名</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="students">小・中・高校生の人数</label>
+          <select id="students" name="students">
+            <option value="0" selected>0名</option>
+            <option value="1">1名</option>
+            <option value="2">2名</option>
+            <option value="3">3名</option>
+            <option value="4">4名</option>
+            <option value="5">5名</option>
+            <option value="6">6名</option>
+          </select>
+        </div>
+      </div>
+
+      <fieldset>
+        <legend>今後のイベントのお知らせをメールで受け取りますか？</legend>
+        <div class="radio-group">
+          <label><input type="radio" name="newsletter" value="はい" checked> はい</label>
+          <label><input type="radio" name="newsletter" value="いいえ"> いいえ</label>
+        </div>
+      </fieldset>
+
+      <div class="fee-box">
+        <span>参加費 合計</span>
+        <span class="amount">¥<span id="feeAmount">2,000</span></span>
+      </div>
+      <p class="fee-note">大人 1名 ¥2,000／小・中・高校生は無料です。</p>
+
+      <div class="submit-row">
+        <button type="submit" class="btn" id="submitBtn">申し込む</button>
+      </div>
+      <p class="error-msg" id="errorMsg">送信に失敗しました。時間をおいて再度お試しください。</p>
+    </form>
+
+    <div class="stub" id="stub">
+      <div class="stub-top">
+        <div class="check">✓</div>
+        <h3 class="serif">お申し込みを受け付けました</h3>
+        <p><span id="stubName"></span> 様</p>
+      </div>
+      <div class="perforation"></div>
+      <div class="stub-bottom">
+        <div class="label">お振込みのご案内</div>
+        <div class="bank-card">
+          <div class="bank-row"><span class="k">銀行名</span><span class="v">ドコモ SMTBネット銀行</span></div>
+          <div class="bank-row"><span class="k">支店番号</span><span class="v">101</span></div>
+          <div class="bank-row"><span class="k">口座種別</span><span class="v">普通</span></div>
+          <div class="bank-row"><span class="k">口座番号</span><span class="v">1255623</span></div>
+          <div class="bank-row"><span class="k">口座名義</span><span class="v">オオモリミサ</span></div>
+          <div class="bank-row"><span class="k">お振込金額</span><span class="v total">¥<span id="stubAmount"></span></span></div>
+        </div>
+        <p class="stub-note">お振込み確認後、<strong>入場用QRコード</strong>をメールにてお送りします。恐れ入りますが、振込手数料はご負担ください。</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2026 映画上映会「愛の地球へⅣ」実行委員会
+  </footer>
+
+<script>
+  // ▼▼ ここをご自身のGASウェブアプリURLに差し替えてください ▼▼
+  const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbwRfH8HChal3KW2nlhzaS2GP1BTf4WFmlQqZWTxu4KnThAlndtGH8a0_xlJxag1YM6E-Q/exec";
+  const ADULT_FEE = 2000;
+
+  const adultsEl = document.getElementById('adults');
+  const feeAmountEl = document.getElementById('feeAmount');
+
+  function currentFee(){
+    return parseInt(adultsEl.value, 10) * ADULT_FEE;
+  }
+  function updateFee(){
+    feeAmountEl.textContent = currentFee().toLocaleString('ja-JP');
+  }
+  adultsEl.addEventListener('change', updateFee);
+  updateFee();
+
+  const form = document.getElementById('applyForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const errorMsg = document.getElementById('errorMsg');
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    errorMsg.style.display = 'none';
+    submitBtn.disabled = true;
+    submitBtn.textContent = '送信中…';
+
+    const total = currentFee();
+    const payload = {
+      name: document.getElementById('name').value.trim(),
+      kana: document.getElementById('kana').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      tel: document.getElementById('tel').value.trim(),
+      adults: adultsEl.value,
+      students: document.getElementById('students').value,
+      newsletter: form.querySelector('input[name="newsletter"]:checked').value,
+      total: total,
+      submittedAt: new Date().toISOString()
+    };
+
+    try{
+      const res = await fetch(ENDPOINT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // simple request回避のためtext/plainで送信
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if(!data || data.status !== 'ok'){ throw new Error((data && data.message) ? data.message : 'response not ok'); }
+
+      document.getElementById('stubName').textContent = payload.name;
+      document.getElementById('stubAmount').textContent = total.toLocaleString('ja-JP');
+      form.style.display = 'none';
+      document.getElementById('stub').style.display = 'block';
+      document.getElementById('stub').scrollIntoView({behavior:'smooth', block:'start'});
+    }catch(err){
+      errorMsg.textContent = '送信に失敗しました：' + err.message;
+      errorMsg.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = '申し込む';
+    }
+  });
+</script>
+</body>
+</html>
