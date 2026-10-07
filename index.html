@@ -403,6 +403,14 @@
       </div>
 
       <fieldset>
+        <legend>お支払い方法<span class="req">必須</span></legend>
+        <div class="radio-group">
+          <label><input type="radio" name="payment_method" value="銀行振込" checked> 銀行振込</label>
+          <label><input type="radio" name="payment_method" value="当日支払い"> 当日支払い</label>
+        </div>
+      </fieldset>
+
+      <fieldset>
         <legend>今後のイベントのお知らせをメールで受け取りますか？</legend>
         <div class="radio-group">
           <label><input type="radio" name="newsletter" value="はい" checked> はい</label>
@@ -431,16 +439,26 @@
       </div>
       <div class="perforation"></div>
       <div class="stub-bottom">
-        <div class="label">お振込みのご案内</div>
-        <div class="bank-card">
-          <div class="bank-row"><span class="k">銀行名</span><span class="v">ドコモ SMTBネット銀行</span></div>
-          <div class="bank-row"><span class="k">支店番号</span><span class="v">101（イチゴ支店）</span></div>
-          <div class="bank-row"><span class="k">口座種別</span><span class="v">普通</span></div>
-          <div class="bank-row"><span class="k">口座番号</span><span class="v">1255623</span></div>
-          <div class="bank-row"><span class="k">口座名義</span><span class="v">オオモリミサ</span></div>
-          <div class="bank-row"><span class="k">お振込金額</span><span class="v total">¥<span id="stubAmount"></span></span></div>
+        <div id="bankSection">
+          <div class="label">お振込みのご案内</div>
+          <div class="bank-card">
+            <div class="bank-row"><span class="k">銀行名</span><span class="v">ドコモ SMTBネット銀行</span></div>
+            <div class="bank-row"><span class="k">支店番号</span><span class="v">101（イチゴ支店）</span></div>
+            <div class="bank-row"><span class="k">口座種別</span><span class="v">普通</span></div>
+            <div class="bank-row"><span class="k">口座番号</span><span class="v">1255623</span></div>
+            <div class="bank-row"><span class="k">口座名義</span><span class="v">オオモリミサ</span></div>
+            <div class="bank-row"><span class="k">お振込金額</span><span class="v total">¥<span id="stubAmount"></span></span></div>
+          </div>
         </div>
-        <p class="stub-note">お振込み確認後、<strong>入場用QRコード</strong>をメールにてお送りします。恐れ入りますが、振込手数料はご負担ください。</p>
+        <div id="doorSection" style="display:none;">
+          <div class="label">お支払いのご案内</div>
+          <div class="bank-card">
+            <div class="bank-row"><span class="k">お支払い方法</span><span class="v">当日受付にて現金でお支払い</span></div>
+            <div class="bank-row"><span class="k">お支払い金額</span><span class="v total">¥<span id="stubAmountDoor"></span></span></div>
+          </div>
+        </div>
+        <p class="stub-note" id="bankNote">お振込み確認後、<strong>入場用QRコード</strong>をメールにてお送りします。恐れ入りますが、振込手数料はご負担ください。</p>
+        <p class="stub-note" id="doorNote" style="display:none;">当日、受付にて参加費をお支払いください。<strong>入場用QRコード</strong>は別途メールにてお送りします。</p>
       </div>
     </div>
   </section>
@@ -484,6 +502,7 @@
       tel: document.getElementById('tel').value.trim(),
       adults: adultsEl.value,
       students: document.getElementById('students').value,
+      paymentMethod: form.querySelector('input[name="payment_method"]:checked').value,
       newsletter: form.querySelector('input[name="newsletter"]:checked').value,
       total: total,
       submittedAt: new Date().toISOString()
@@ -500,6 +519,14 @@
 
       document.getElementById('stubName').textContent = payload.name;
       document.getElementById('stubAmount').textContent = total.toLocaleString('ja-JP');
+      document.getElementById('stubAmountDoor').textContent = total.toLocaleString('ja-JP');
+
+      const isDoorPayment = payload.paymentMethod === '当日支払い';
+      document.getElementById('bankSection').style.display = isDoorPayment ? 'none' : 'block';
+      document.getElementById('doorSection').style.display = isDoorPayment ? 'block' : 'none';
+      document.getElementById('bankNote').style.display = isDoorPayment ? 'none' : 'block';
+      document.getElementById('doorNote').style.display = isDoorPayment ? 'block' : 'none';
+
       form.style.display = 'none';
       document.getElementById('stub').style.display = 'block';
       document.getElementById('stub').scrollIntoView({behavior:'smooth', block:'start'});
